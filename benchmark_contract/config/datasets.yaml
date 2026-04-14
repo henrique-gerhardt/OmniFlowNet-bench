@@ -1,0 +1,18 @@
+{
+  "datasets": {
+    "omniflownet": {
+      "root": "OMNIFLOWNET_DATASET",
+      "sequence_glob": "*/*",
+      "image_glob": "images/*.png",
+      "flow_glob": "ground_truth/*.flo",
+      "valid_mask_glob": null,
+      "layout": "erp",
+      "pairing": "consecutive_frames",
+      "flow_index_policy": "same_stem_as_first_image",
+      "notes": [
+        "The local dataset stores one ordered image stream and same-index flow files per sequence directory.",
+        "The adapter pairs image N with image N+1 and associates ground truth file N.flo."
+      ]
+    }
+  }
+}

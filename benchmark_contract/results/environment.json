@@ -1,0 +1,16 @@
+{
+  "python_version": "3.12.10",
+  "python_executable": "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3",
+  "platform": "macOS-26.3.1-arm64-arm-64bit",
+  "project_root": "/Volumes/External SSD/Mestrado/BenchmarkIndividualOF/OmniFlowNet",
+  "contract_root": "/Volumes/External SSD/Mestrado/BenchmarkIndividualOF/OmniFlowNet/benchmark_contract",
+  "framework": "caffe-unavailable",
+  "framework_version": null,
+  "caffe_python_available": false,
+  "caffe_binary": null,
+  "caffe_binary_env": null,
+  "cuda_available": false,
+  "driver_version": null,
+  "gpu_name": null,
+  "gpu_count": 0
+}

@@ -1,0 +1,17 @@
+{
+  "parameters": null,
+  "checkpoint_size_mb": null,
+  "flops_g": null,
+  "notes": [
+    "No checkpoint is configured in the workspace.",
+    "No caffe binary was found in CAFFE_BIN, PATH, or the default LiteFlowNet build locations.",
+    "pycaffe is not importable in the current environment. Import error: No module named 'caffe'",
+    "FLOP counting remains null because the workspace does not expose a trustworthy analyzer for the custom CAFFE graph.",
+    "Latency and GPU memory were not measured because real CAFFE inference is unavailable in this workspace."
+  ],
+  "latency_mean_ms": null,
+  "latency_median_ms": null,
+  "latency_p95_ms": null,
+  "max_gpu_memory_mb": null,
+  "fps": null
+}

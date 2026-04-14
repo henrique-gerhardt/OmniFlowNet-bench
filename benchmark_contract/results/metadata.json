@@ -1,0 +1,19 @@
+{
+  "method_name": "omniflownet",
+  "method_family": "perspective-network-adaptation-360",
+  "paper_year": 2021,
+  "framework": "caffe",
+  "scenario": "official_reproduction",
+  "dataset": "omniflownet",
+  "deploy_file": "models/deploy_LiteFlowNet2-ft-sintel_SPHE.prototxt",
+  "checkpoint": null,
+  "commit": "1941803ba6f01027224df65ad52df1e4df37ec40",
+  "notes": [
+    "The checked-in workspace contains OmniFlowNet deploy prototxt files but no pretrained .caffemodel checkpoint.",
+    "Real forward execution requires a compatible CAFFE build with the custom OmniFlowNet layers.",
+    "benchmark_contract/run_inference.py prefers caffe.bin execution and falls back to pycaffe when available."
+  ],
+  "real_inference_executed": false,
+  "reproduction_status": "degraded_missing_checkpoint_or_caffe",
+  "backend": "unavailable"
+}

@@ -1,0 +1,40 @@
+{
+  "scenario": "official_reproduction",
+  "batch_size": 1,
+  "precision": "fp32",
+  "warmup_runs": 3,
+  "measured_runs": 10,
+  "input_height": 384,
+  "input_width": 768,
+  "original_height": 384,
+  "original_width": 768,
+  "single_inference_wall_ms": 0.14016699788044207,
+  "image1_path": "/Volumes/External SSD/Mestrado/BenchmarkIndividualOF/OmniFlowNet/OMNIFLOWNET_DATASET/CartoonTree/CartoonTree/images/file0001.png",
+  "image2_path": "/Volumes/External SSD/Mestrado/BenchmarkIndividualOF/OmniFlowNet/OMNIFLOWNET_DATASET/CartoonTree/CartoonTree/images/file0002.png",
+  "flow_path": "/Volumes/External SSD/Mestrado/BenchmarkIndividualOF/OmniFlowNet/OMNIFLOWNET_DATASET/CartoonTree/CartoonTree/ground_truth/file0001.flo",
+  "sequence_root": "/Volumes/External SSD/Mestrado/BenchmarkIndividualOF/OmniFlowNet/OMNIFLOWNET_DATASET/CartoonTree/CartoonTree",
+  "dataset_root": "/Volumes/External SSD/Mestrado/BenchmarkIndividualOF/OmniFlowNet/OMNIFLOWNET_DATASET",
+  "deploy_file": "/Volumes/External SSD/Mestrado/BenchmarkIndividualOF/OmniFlowNet/models/deploy_LiteFlowNet2-ft-sintel_SPHE.prototxt",
+  "checkpoint": null,
+  "backend": "unavailable",
+  "output_blob": "predict_flow_final",
+  "real_inference_executed": false,
+  "reproduction_status": "degraded_missing_checkpoint_or_caffe",
+  "notes": [
+    "Dataset pairing is inferred from the local layout: image N is paired with image N+1 and ground truth N.flo.",
+    "No checkpoint is configured in the workspace.",
+    "No caffe binary was found in CAFFE_BIN, PATH, or the default LiteFlowNet build locations.",
+    "pycaffe is not importable in the current environment. Import error: No module named 'caffe'",
+    "Real OmniFlowNet inference was not executed because the workspace lacks a usable CAFFE runtime and/or checkpoint."
+  ],
+  "preprocessing_summary": {
+    "image_loader": "cv2.imread / CAFFE ImageData",
+    "color_order": "BGR",
+    "scaling": "pixels multiplied by 1/255 inside deploy",
+    "mean_handling": "DataAugmentation recompute_mean during test",
+    "flow_output_order": [
+      "u",
+      "v"
+    ]
+  }
+}

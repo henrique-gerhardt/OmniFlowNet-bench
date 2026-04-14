@@ -1,0 +1,12 @@
+{
+  "runtime": {
+    "device": "cuda",
+    "precision": "fp32",
+    "batch_size": 1,
+    "warmup_runs": 3,
+    "measured_runs": 10,
+    "num_workers": 0,
+    "seed": 42,
+    "cudnn_benchmark": false
+  }
+}

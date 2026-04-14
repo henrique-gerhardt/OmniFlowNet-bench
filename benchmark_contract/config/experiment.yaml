@@ -1,0 +1,21 @@
+{
+  "experiment": {
+    "scenario": "official_reproduction",
+    "dataset": "omniflownet",
+    "input_height": 384,
+    "input_width": 768,
+    "adapted_height": 384,
+    "adapted_width": 768,
+    "checkpoint": null,
+    "checkpoint_env": "OMNIFLOWNET_CHECKPOINT",
+    "deploy_file": "models/deploy_LiteFlowNet2-ft-sintel_SPHE.prototxt",
+    "output_blob": "predict_flow_final",
+    "sample_sequence": "CartoonTree/CartoonTree",
+    "sample_index": 0,
+    "save_optional_predictions": false,
+    "notes": [
+      "The workspace contains dataset-native ERP images at 384x768.",
+      "Set OMNIFLOWNET_CHECKPOINT to a real .caffemodel path to enable CAFFE inference."
+    ]
+  }
+}

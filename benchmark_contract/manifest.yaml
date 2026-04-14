@@ -1,0 +1,42 @@
+{
+  "contract_version": 1.0,
+  "method_name": "omniflownet",
+  "method_family": "perspective-network-adaptation-360",
+  "paper_year": 2021,
+  "framework": "caffe",
+  "supports_gpu": true,
+  "input_format": {
+    "image_layout": "erp",
+    "tensor_shape": ["B", "C", "H", "W"],
+    "dtype": "float32",
+    "color_order": "BGR",
+    "normalized_range": "[0, 1] followed by deploy-defined mean removal"
+  },
+  "output_format": {
+    "flow_layout": "erp",
+    "flow_tensor_shape": ["B", 2, "H", "W"],
+    "dtype": "float32",
+    "flow_order": ["u", "v"],
+    "output_blob": "predict_flow_final"
+  },
+  "checkpoints": {
+    "default": null,
+    "env_override": "OMNIFLOWNET_CHECKPOINT"
+  },
+  "deploy_files": {
+    "liteflownet2_sintel": "models/deploy_LiteFlowNet2-ft-sintel_SPHE.prototxt",
+    "liteflownet2_kitti": "models/deploy_LiteFlowNet2-ft-kitti_SPHE.prototxt",
+    "liteflownet3_sintel": "models/deploy_LiteFlowNet3-ft-sintel_SPHE.prototxt"
+  },
+  "datasets_supported": ["omniflownet"],
+  "scenarios_supported": [
+    "official_reproduction",
+    "standardized_efficiency",
+    "regional_robustness"
+  ],
+  "notes": [
+    "The checked-in workspace contains OmniFlowNet deploy prototxt files but no pretrained .caffemodel checkpoint.",
+    "Real forward execution requires a compatible CAFFE build with the custom OmniFlowNet layers.",
+    "benchmark_contract/run_inference.py prefers caffe.bin execution and falls back to pycaffe when available."
+  ]
+}

@@ -1,0 +1,82 @@
+FROM nvidia/cuda:8.0-cudnn5-devel-ubuntu16.04
+
+ARG DEBIAN_FRONTEND=noninteractive
+ARG LITEFLOWNET_REPO=https://github.com/twhui/LiteFlowNet.git
+ARG LITEFLOWNET_REF=master
+ARG OMNIFLOWNET_MODEL_URL=
+
+WORKDIR /app
+
+ENV PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    CONDA_DIR=/opt/conda \
+    LITEFLOWNET_ROOT=/opt/LiteFlowNet \
+    CAFFE_BIN=/opt/LiteFlowNet/build/tools/caffe.bin \
+    LD_LIBRARY_PATH=/opt/LiteFlowNet/build/lib:${LD_LIBRARY_PATH}
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    ca-certificates \
+    curl \
+    git \
+    libatlas-base-dev \
+    libboost-all-dev \
+    libgflags-dev \
+    libgoogle-glog-dev \
+    libhdf5-serial-dev \
+    libleveldb-dev \
+    liblmdb-dev \
+    libopenblas-dev \
+    libopencv-dev \
+    libprotobuf-dev \
+    libsnappy-dev \
+    pkg-config \
+    protobuf-compiler \
+    python-dev \
+    python-numpy \
+    rsync \
+    unzip \
+    wget \
+    zip \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN curl -fsSL https://repo.anaconda.com/miniconda/Miniconda3-py310_24.1.2-0-Linux-x86_64.sh -o /tmp/miniconda.sh \
+  && bash /tmp/miniconda.sh -b -p "${CONDA_DIR}" \
+  && rm -f /tmp/miniconda.sh
+
+ENV PATH=${CONDA_DIR}/bin:${PATH}
+
+COPY . /app
+
+RUN pip install --no-cache-dir -r /app/benchmark_contract/requirements-benchmark.txt
+
+RUN git clone --recursive "${LITEFLOWNET_REPO}" "${LITEFLOWNET_ROOT}" \
+  && cd "${LITEFLOWNET_ROOT}" \
+  && git checkout "${LITEFLOWNET_REF}" \
+  && cp /app/src/caffe/util/im2col.cu "${LITEFLOWNET_ROOT}/src/caffe/util/im2col.cu" \
+  && cp Makefile.config.example Makefile.config \
+  && sed -i 's/^# USE_CUDNN := 1/USE_CUDNN := 1/' Makefile.config \
+  && sed -i 's/^BLAS := atlas/BLAS := open/' Makefile.config \
+  && sed -i 's|^INCLUDE_DIRS := .*|INCLUDE_DIRS := /usr/local/include /usr/include/hdf5/serial|' Makefile.config \
+  && sed -i 's|^LIBRARY_DIRS := .*|LIBRARY_DIRS := /usr/local/lib /usr/lib /usr/lib/x86_64-linux-gnu /usr/lib/x86_64-linux-gnu/hdf5/serial|' Makefile.config \
+  && make -j"$(nproc)" all tools
+
+RUN mkdir -p /opt/checkpoints
+COPY benchmark_contract/docker_assets/checkpoints/ /opt/checkpoints/
+RUN if [ -n "${OMNIFLOWNET_MODEL_URL}" ]; then \
+      wget -O /tmp/omniflownet_model_asset "${OMNIFLOWNET_MODEL_URL}"; \
+      file /tmp/omniflownet_model_asset || true; \
+      if tar -tzf /tmp/omniflownet_model_asset >/dev/null 2>&1; then \
+        tar -xzf /tmp/omniflownet_model_asset -C /opt/checkpoints; \
+      else \
+        cp /tmp/omniflownet_model_asset /opt/checkpoints/downloaded_model.caffemodel; \
+      fi; \
+      rm -f /tmp/omniflownet_model_asset; \
+    fi
+RUN find /opt/checkpoints -maxdepth 1 -type f -name '*.tar.gz' -print -exec tar -xzf {} -C /opt/checkpoints \; -exec rm -f {} \; || true
+RUN find /opt/checkpoints -maxdepth 1 -type f -name '*.tgz' -print -exec tar -xzf {} -C /opt/checkpoints \; -exec rm -f {} \; || true
+
+RUN chmod +x /app/benchmark_contract/entrypoint.sh
+
+ENTRYPOINT ["/app/benchmark_contract/entrypoint.sh"]
+CMD ["official_reproduction"]
